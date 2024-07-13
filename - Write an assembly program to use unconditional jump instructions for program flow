@@ -1,0 +1,6 @@
+START: MVI A, 05H ; Load the number 5 into accumulator
+JMP PRINT ; Jump unconditionally to PRINT label
+LOOP: INR A ; Increment the accumulator
+PRINT: STA 2050H ; Store the value of accumulator in memory location 2050H
+JMP LOOP ; Jump unconditionally to LOOP label
+HLT ; Halt the program
