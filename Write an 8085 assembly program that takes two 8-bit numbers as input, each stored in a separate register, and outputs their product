@@ -1,0 +1,15 @@
+MVI A, 00H ; Clear accumulator to store product
+MVI B, 25H ; Load first number (25H) into register B
+MVI C, 05H ; Load second number (05H) into register C
+MVI D, 08H ; Initialize counter to 8
+LOOP;
+RLC ; Rotate C left, checking LSB
+JNC NOADD ; Jump if LSB is 0
+ADD B ; Add B to A if LSB is 1
+NOADD;
+DAD H ; Shift B left by one position
+DCR D ; Decrement counter
+JNZ LOOP ; Repeat if counter is not zero
+; Optional; Store the product in another register or memory location; 
+STA 3000H ; Store product in memory location 3000H
+HLT
