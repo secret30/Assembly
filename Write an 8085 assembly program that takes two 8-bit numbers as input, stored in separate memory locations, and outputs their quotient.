@@ -1,0 +1,17 @@
+LXI H, 2000H ; Load memory address of dividend (2000H) into HL
+LXI D, 2001H ; Load memory address of divisor (2001H) into DE
+MVI A, 00H ; Clear accumulator to store quotient
+MVI B, 08H ; Initialize counter to 8
+LOOP;
+DAD H ; Shift dividend left
+SUB M ; Subtract divisor from dividend
+JNC NOADD ; Jump if result is positive or zero
+ADD M ; Restore dividend if negative
+NOADD;
+ORA A ; Set quotient bit
+RLC ; Shift quotient left
+DCR B ; Decrement counter
+JNZ LOOP ; Repeat if counter is not zero
+; Optional; Store the quotient in another register or memory location;
+STA 3002H ; Store quotient in memory location 3002H
+HLT ; Halt the program
