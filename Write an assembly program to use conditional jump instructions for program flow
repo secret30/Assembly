@@ -1,0 +1,13 @@
+START: LXI H, 2000H ; Load memory address 2000H into HL pair
+MOV A, M ; Get value from memory
+CPI 40H ; Compare with 40H
+JC BELOW ; Jump to BELOW if value is less than 40H
+JZ EQUAL ; Jump to EQUAL if value is equal to 40H
+; If value is greater than 40H:
+MVI A, 'G' ; Load 'G' (Greater) into accumulator
+JMP OUTPUT ; Jump to output
+BELOW: MVI A, 'L' ; Load 'L' (Lesser) into accumulator
+JMP OUTPUT ; Jump to output
+EQUAL: MVI A, 'E' ; Load 'E' (Equal) into accumulator
+OUTPUT: STA 2050H ; Store result in memory location 2050H
+HLT ; Halt the program
