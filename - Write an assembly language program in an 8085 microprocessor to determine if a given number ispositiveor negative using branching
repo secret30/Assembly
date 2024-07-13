@@ -1,0 +1,25 @@
+LXI H, 6000H ; Initialize memory pointer
+MVI C, 00H ; Initialize number counter
+MVI B, 00H ; Initialize negative number counter
+MVI E, 00H ; Initialize zero number counter
+BEGIN: MOV A, M ; Get the number
+CPI 00H ; If number = 0
+JZ ZERONUM ; Go to zero num
+ANI 80H ; If MSB of number = 1i.e. if
+JNZ NEGNUM ; number is negative goto NEGNUM
+INR D ; otherwise increment positive number counter
+JMP LAST
+ZERONUM: INR E ; Increment zero number counter
+JMP LAST
+NEGNUM: INR B ; Increment negative number counter
+LAST: INX H ; Increment memory pointer
+INR C ; Increment number counter
+MOV A, C
+CPI 32H ; If number counter = 5010 then
+JNZ BEGIN ; Store otherwise check next number
+LXI H, 7000 ; Initialize memory pointer. MOV M, B ; Store negative numbers.
+INX H
+MOV M, E ; Store zero number.
+INX H
+MOV M, D ; Store positive numbers. 
+HLT ; Terminate execution
