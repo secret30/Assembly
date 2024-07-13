@@ -1,0 +1,17 @@
+START:
+LXI H, 2050H ; Load input number from memory location 2050HMVI C, 00H ; Initialize flag for not a palindrome
+MVI B, 08H ; Set loop counter for 8 iterations (16 bits)
+REVERSE_LOOP:
+MOV A, L ; Get lower byte of number
+ANI 0FH ; Isolate LSD
+MOV D, A ; Store LSD in D
+RLC ; Rotate remaining digits left
+RLC L
+RLC H
+MOV A, D ; Get LSD back
+CMP L ; Compare LSD with corresponding digit of reversed numberJNZ NOT_PALINDROME
+DCR B ; Decrement loop counter
+JNZ REVERSE_LOOP
+; If loop completes without mismatches, it's a palindromeMVI C, FFH ; Set flag for palindrome
+NOT_PALINDROME:
+STA 3050H ; Store result (00H or FFH) in memory location 3050HHLT ; Halt the program
