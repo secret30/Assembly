@@ -1,0 +1,16 @@
+LXI H, 2000H ; Load memory address of the number
+MVI B, 00H ; Initialize sum to 0
+CALL SUM_DIGITS ; Call function to calculate sum
+STA 3050H ; Store the sum in memory location 3050H
+HLT ; Halt the program
+SUM_DIGITS: ; Function SUM_DIGITS
+MOV A, M ; Load current byte from memory
+CPI 00H ; Check if it's zero
+JZ END_FUNC ; If zero, end the function
+ANI 0FH ; Isolate least significant digit
+ADD B ; Add digit to sum
+DCR M ; Shift remaining digits to the right
+CALL SUM_DIGITS ; Recursive call
+END_FUNC:
+MOV B, A ; Move final sum to register B
+RET ; Return from function
