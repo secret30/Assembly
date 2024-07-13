@@ -1,0 +1,31 @@
+LXI H, 2000H ; Load starting address of range values
+MOV A, M ; Load starting value of range
+STA 3000H ; Store it in a temporary location
+INX H
+MOV A, M ; Load ending value of range
+STA 3001H ; Store it in another temporary location
+LXI H, 4000H ; Load starting address for storing prime numbers
+MVI B, 00H ; Initialize prime count to 0
+LOOP:
+LXI D, 3000H ; Load current number to be checked
+MOV A, M
+STA 3002H ; Store it in a temporary location
+MVI C, 02H ; Initialize divisor counter to 2
+CHECK_DIV:
+MOV A, C ; Move divisor to accumulator
+CMP C, 3002H ; Compare divisor with the square root of the number
+JNC NOT_PRIME ; If divisor > square root, it's prime
+MOV A, 3002H ; Load the number to be checked
+DIV C ; Divide the number by the divisor
+CPI 00H ; Check for remainder
+JNZ NOT_PRIME ; If remainder is not zero, it's not prime
+INR C ; Increment divisor and check again
+JMP CHECK_DIV
+NOT_PRIME:
+INX D ; Move to the next number in the range
+MOV A, M ; Load the next number
+STA 3002H ; Store it in the temporary location
+CMP M, 3001H ; Compare with the ending value of the range
+JC LOOP ; If not reached the end, continue checking
+STA 5000H ; Store prime count in designated memory location
+HLT ; Halt the program
