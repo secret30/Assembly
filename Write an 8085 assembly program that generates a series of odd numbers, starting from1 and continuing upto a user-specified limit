@@ -1,0 +1,13 @@
+LXI H, 4000H ; Load starting memory address for storing odd numbers
+MVI B, 01H ; Initialize counter with 1
+LXI D, 2000H ; Load specified limit from memory location 2000H
+LOOP:
+MOV A, B ; Move counter value to accumulator
+STAX D ; Store odd number in memory
+INX H ; Increment memory pointer
+INX D
+INR B ; Increment counter by 1
+INR B ; Increment again to get the next odd number
+CMP B, D ; Compare counter with limit
+JC LOOP ; Jump to LOOP if counter <= limit
+HLT ; Halt the program
