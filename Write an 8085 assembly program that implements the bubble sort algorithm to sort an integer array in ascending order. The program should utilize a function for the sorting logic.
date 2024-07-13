@@ -1,0 +1,26 @@
+LXI H, ARRAY_START ; Load starting address of the array
+MVI B, ARRAY_SIZE ; Load size of the array
+CALL BUBBLE_SORT ; Call bubble sort function
+HLT ; Halt the program
+BUBBLE_SORT: ; Bubble Sort Function
+MOV C, B ; Initialize outer loop counter
+OUTER_LOOP:
+DCR C ; Decrement outer loop counter
+MOV D, B ; Initialize inner loop counter
+INNER_LOOP:
+LDAX D ; Load first element
+CMP M ; Compare with next element
+JC NO_SWAP ; Jump if no swap needed
+MOV E, A ; Store first element in E
+MOV A, M ; Move next element to A
+STAX D ; Store A in first element's position
+MOV A, E ; Move E back to A
+STAX D+1 ; Store A in next element's position
+NO_SWAP:
+INX D ; Increment memory pointer
+DCR D ; Decrement inner loop counter
+JNZ INNER_LOOP ; Repeat inner loop if not zero
+JNZ OUTER_LOOP ; Repeat outer loop if not zero
+RET ; Return from function
+ARRAY_START: DB 5, 2, 4, 1, 3 ; Example array
+ARRAY_SIZE: EQU 5 ; Size of the array
