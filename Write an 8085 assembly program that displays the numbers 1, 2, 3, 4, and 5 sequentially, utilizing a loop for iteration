@@ -1,0 +1,10 @@
+MVI A, 00H ; Initialize output port
+OUT 01H ; Send initialization to output port
+MVI B, 01H ; Initialize counter with 1
+LOOP;
+MOV A, B ; Move counter value to accumulator
+OUT 01H ; Display number on output device
+INR B ; Increment counter
+CMP B, 05H ; Compare counter with 5
+JC LOOP ; Jump to LOOP if counter <= 5
+HLT ; Halt the program
