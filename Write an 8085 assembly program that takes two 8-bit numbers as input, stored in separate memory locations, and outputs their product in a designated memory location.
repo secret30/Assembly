@@ -1,16 +1,16 @@
-LXI H, 2000H ; Load memory address of first number into HL
-LXI D, 2001H ; Load memory address of second number into DE
-MOV A, M ; Load first number into accumulator
-MVI B, 00H ; Clear register B for partial product
-MVI C, 08H ; Initialize counter to 8
-LOOP;
-RLC ; Rotate accumulator left, checking LSB
-JNC NOADD ; Jump if LSB is 0
-ADD M ; Add second number to partial product if LSB is 1
-NOADD;
-DAD H ; Shift partial product left by one position
-RLC ; Rotate accumulator left for next bit
-DCR C ; Decrement counter
-JNZ LOOP ; Repeat if counter is not zero
-STA 3000H ; Store final product in memory location 3000H
-HLT ; Halt the program
+LXI H, 2000H 
+MOV B, M 
+MVI A, 00H 
+MVI D, 00H 
+INX H
+MOV C, M
+LOOP2: ADD B
+JNZ LOOP
+INR D
+LOOP: DCR C
+JNZ LOOP2
+STA 2005H 
+MOV A, D
+LXI H, 2006H 
+MOV M, D     
+HLT
