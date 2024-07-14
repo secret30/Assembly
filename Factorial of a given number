@@ -1,0 +1,22 @@
+MVI B, 04H      ; Load B with the number for which factorial is to be calculated
+MVI D, 01H      ; Initialize D to 1 for factorial calculation
+
+FACT: CALL MULT       ; Call subroutine MULT for multiplication with D
+DCR B           ; Decrement B (number being factorial-ed)
+JNZ FACT        ; If B != 0, jump to FACT
+
+LXI H, 0000H    ; Load HL with address 0000H (assuming this is where the result will be stored)
+MOV M, D        ; Store the result (factorial) in memory at address 0000H
+
+HLT             ; Halt the program
+
+MULT: MOV E, B        ; Move B to E for multiplication loop
+MVI A, 00H      ; Clear accumulator A for addition
+
+LOOP: ADD D           ; Add D to accumulator A
+DCR E           ; Decrement E (B) for multiplication loop
+JNZ LOOP        ; If E != 0, jump to LOOP
+
+MOV D, A        ; Move accumulator A (result of multiplication) to D
+
+RET             ; Return from subroutine
