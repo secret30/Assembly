@@ -1,0 +1,10 @@
+LDA 0000H    ; Load accumulator with data from memory location 0000H
+RAR          ; Rotate accumulator right through carry
+JC LOOP 
+MVI A, 22H   ; If carry flag is not set (0), move immediate value 22H into accumulator A
+STA 0001H    ; Store accumulator A into memory location 0001H
+HLT          ; Halt the program
+LOOP: MVI A, 11H   ; Load immediate value 11H into accumulator A
+STA 0001H    ; Store accumulator A into memory location 0001H
+HLT          ; Halt the program
+; 22H INDICATES EVEN AND 11H INDICATES ODD
