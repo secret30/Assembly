@@ -1,16 +1,15 @@
-MVI A, 00H ; Clear accumulator to store quotient
-MVI B, 25H ; Load dividend (25H) into register B
-MVI C, 05H ; Load divisor (05H) into register C
-MVI D, 08H ; Initialize counter to 8
-LOOP;
-RLC ; Rotate B left
-SUB C ; Subtract divisor from accumulator
-JC NOSUB ; Jump if result is negative
-INR A ; Set LSB of quotient to 1
-NOSUB;
-DAD H ; Shift accumulator left
-DCR D ; Decrement counter
-JNZ LOOP ; Repeat if counter is not zero
-; Optional; Store the quotient in another register or memory location; 
-STA 3000H ; Store quotient in memory location 3000H
-HLT ; Halt the program
+LXI H,2000H
+MOV B,M 
+INX H
+MOV C,M
+MVI A,00H
+MVI D,00H
+MOV A,B
+LOOP: SUB C
+INR D
+CMP C
+JNC LOOP
+STA 2002H
+MOV A,D
+STA 2003H
+HLT
