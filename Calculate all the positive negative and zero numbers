@@ -1,0 +1,32 @@
+LXI H, 6000H   ; Initialize HL pair with memory pointer 6000H
+MVI C, 00H     ; Initialize positive number counter
+MVI B, 00H     ; Initialize negative number counter
+MVI E, 00H     ; Initialize zero number counter
+
+BEGIN: MOV A, M       ; Load accumulator A with data from memory location pointed by HL
+CPI 00H        ; Compare accumulator A with 0
+JZ ZERONUM     ; If A == 0, jump to ZERONUM
+ANI 80H        ; Logical AND accumulator A with 80H (checks MSB for sign bit)
+JNZ NEGNUM     ; If result is not zero, jump to NEGNUM (number is negative)
+INR C          ; Increment positive number counter
+JMP LAST       ; Jump to LAST to continue
+
+ZERONUM: INR E          ; Increment zero number counter
+JMP LAST       ; Jump to LAST to continue
+
+NEGNUM: INR B          ; Increment negative number counter
+LAST: INX H          ; Increment memory pointer (HL)
+INR C          ; Increment total number counter
+MOV A, C       ; Move value of C (total number counter) to accumulator A
+CPI 32H        ; Compare accumulator A with 32H (50 in decimal)
+JNZ BEGIN      ; If A != 50, jump to BEGIN to process next number
+
+; If A == 50, store counters in designated memory locations
+LXI H, 7000H   ; Initialize HL pair with memory pointer 7000H
+MOV M, B       ; Store negative numbers count at 7000H
+INX H          ; Increment HL to point to the next memory location
+MOV M, E       ; Store zero numbers count at 7001H
+INX H          ; Increment HL to point to the next memory location
+MOV M, C       ; Store positive numbers count at 7002H
+
+HLT            ; Terminate execution
