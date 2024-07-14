@@ -1,15 +1,18 @@
-LXI H, 2050H ; Load memory address of base value
-MOV A, M ; Move base value to accumulator
-INX H ; Point to exponent value
-MOV B, M ; Move exponent value to B
-LXI H, 3000H ; Initialize memory address for result
-CALL POWER ; Call POWER function
-HLT ; Halt the program
-POWER: ; POWER function
-MVI D, 01H ; Initialize result with 1
-LOOP:
-ADD D ; Multiply accumulator by base (repeated addition)
-DCR B ; Decrement exponent
-JNZ LOOP ; Continue loop until exponent = 0
-STA 3000H ; Store result in memory
-RET ; Return to main program
+LXI H, 0000H
+MOV B, M
+INX H
+MOV C, M
+MVI D, 01H
+POWERLOOP: CALL MULTIPLY
+DCR C
+JNZ POWERLOOP
+INX H
+MOV M, D
+HLT
+MULTIPLY: MOV E, B
+MVI A, 00H
+MULTIPLYLOOP: ADD D
+DCR E
+JNZ MULTIPLYLOOP
+MOV D, A
+RET
