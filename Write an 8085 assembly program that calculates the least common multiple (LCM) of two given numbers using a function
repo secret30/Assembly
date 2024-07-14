@@ -1,35 +1,31 @@
-LXI H, 2050H ; Load first number from 2050H
-MOV A, M
-MOV B, A ; Store first number in B
-INX H
-MOV A, M
-LXI H, 4000H ; Load memory location for LCM
-MOV M, A ; Store second number in 4000H
-CALL LCM ; Call LCM function
-HLT ; Halt the program
-LCM: ; LCM Function
-MOV A, B ; Compare first and second numbers
-CMP M
-JC SWAP ; Swap if first number is smaller
-MOV D, A ; Store larger number in D
-MOV E, M ; Store smaller number in E
-MVI B, 01H ; Initialize loop counter
-LOOP:
-MOV A, D ; Multiply larger number with counter
-MUL B
-MOV D, A
-MOV A, B
-STA 5000H ; Temporary storage for high byte of product
-MOV A, D
-CMP E ; Check divisibility by smaller number
-JZ LCM_FOUND
-INR B
-JMP LOOP
-LCM_FOUND:
-MOV A, D
-STA 4000H ; Store LCM in designated memory location
-RET ; Return from function
-SWAP:
-MOV D, M ; Swap numbers if first was smaller
-MOV E, A
-JMP LOOP
+LXI H, 8000H      ; Load HL with starting address 8000H
+MOV C, M          ; Move the value at address 8000H to register C
+MVI B, 00H        ; Initialize B with 00H
+INX H             ; Increment HL to point to 8001H
+MOV A, M          ; Move the value at address 8001H to register A
+CMA               ; Complement the value in the accumulator
+MOV E, A          ; Move the complemented value to register E
+MVI D, FFH        ; Move FFH into register D
+
+INX D             ; Increment D
+LXI H, 0000H      ; Load HL with 0000H
+
+NEXT: DAD B       ; Add BC (00) to HL
+SHLD 8050H        ; Store HL into memory at 8050H and 8051H
+LOOP: DAD D       ; Add DE to HL (FF)
+JNC SKIP          ; Jump to SKIP if no carry
+
+MOV A, H          ; Move the higher byte of HL to A
+ORA L             ; OR the accumulator with the lower byte of HL
+JZ EXIT           ; If zero, jump to EXIT
+
+SKIP: LHLD 8050H  ; Load HL from memory at 8050H and 8051H
+JMP NEXT          ; Jump back to NEXT
+
+EXIT: LHLD 8050H  ; Load HL from memory at 8050H and 8051H
+HLT               ; Halt the execution
+
+//OUTPUT
+8000H:- 03
+8001H:- 06
+THEN 8050:- 06
